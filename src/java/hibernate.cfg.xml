@@ -8,10 +8,12 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">hurtarte</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/student</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/db_students</property>
         <property name="show_sql">true</property>
         <property name="format_sql">false</property>
+        <property name="connection.pool_size">1</property>  
+        <property name="hbm2ddl.auto">create-drop</property>
         <mapping class="pojo.University"/>
-        <mapping class="pojo.Student"/>
+        <mapping class="pojo.Student"/>    
     </session-factory>
 </hibernate-configuration>
