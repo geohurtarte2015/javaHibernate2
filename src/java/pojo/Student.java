@@ -1,37 +1,51 @@
 package pojo;
 
- 
-import java.io.Serializable;
- 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
  
 @Entity
 @Table(name = "STUDENT")
-public class Student implements Serializable {
+public class Student {
  
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue
+    @Column(name = "STUDENT_ID")
+    private long id;
  
-    @Column(name = "FIRST_NAME", nullable = false)
+    @Column(name = "FIRST_NAME")
     private String firstName;
  
-    @Column(name = "LAST_NAME", nullable = false)
+    @Column(name = "LAST_NAME")
     private String lastName;
  
-    @Column(name = "SECTION", nullable = false)
+    @Column(name = "SECTION")
     private String section;
  
-    public int getId() {
+    @ManyToOne(optional = false)
+    @JoinColumn(name="UNIVERSITY_ID")
+    private University university;
+ 
+ 
+    public Student() {
+    }
+ 
+    public Student(String firstName, String lastName, String section) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.section = section;
+    }
+ 
+    public long getId() {
         return id;
     }
  
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
  
@@ -59,26 +73,12 @@ public class Student implements Serializable {
         this.section = section;
     }
  
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
+    public University getUniversity() {
+        return university;
     }
  
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Student))
-            return false;
-        Student other = (Student) obj;
-        if (id != other.id)
-            return false;
-        return true;
+    public void setUniversity(University university) {
+        this.university = university;
     }
  
     @Override
