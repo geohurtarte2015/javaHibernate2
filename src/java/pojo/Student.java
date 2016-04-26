@@ -1,11 +1,18 @@
 package pojo;
 
 
+ 
+import java.util.ArrayList;
+import java.util.List;
+ 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
  
@@ -23,22 +30,23 @@ public class Student {
  
     @Column(name = "LAST_NAME")
     private String lastName;
- 
-    @Column(name = "SECTION")
-    private String section;
- 
+    
     @ManyToOne(optional = false)
-    @JoinColumn(name="UNIVERSITY_ID")
-    private University university;
+    @JoinColumn(name="TEACHER_ID")
+    private Teacher teacher;
  
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "STUDENT_SUBJECT", 
+        joinColumns = { @JoinColumn(name = "STUDENT_ID") }, 
+        inverseJoinColumns = { @JoinColumn(name = "SUBJECT_ID") })
+    private List<Subject> subjects = new ArrayList<Subject>();
  
     public Student() {
     }
  
-    public Student(String firstName, String lastName, String section) {
+    public Student(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.section = section;
     }
  
     public long getId() {
@@ -65,26 +73,51 @@ public class Student {
         this.lastName = lastName;
     }
  
-    public String getSection() {
-        return section;
+    public List<Subject> getSubjects() {
+        return subjects;
     }
  
-    public void setSection(String section) {
-        this.section = section;
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
  
-    public University getUniversity() {
-        return university;
+     
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
     }
  
-    public void setUniversity(University university) {
-        this.university = university;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Student))
+            return false;
+        Student other = (Student) obj;
+        if (id != other.id)
+            return false;
+        return true;
     }
  
     @Override
     public String toString() {
         return "Student [id=" + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", section=" + section + "]";
+                + lastName + "]";
+    }
+
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
  
 }

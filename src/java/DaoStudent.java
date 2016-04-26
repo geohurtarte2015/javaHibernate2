@@ -1,44 +1,49 @@
 
-import java.util.List;
- 
 import org.hibernate.Session;
  
 import pojo.Student;
-import pojo.University;
+import pojo.Subject;
+import pojo.Teacher;
  
  
 public class DaoStudent {
      
-    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
  
-        Student student1 = new Student("Sam","Disilva","Maths");
-        Student student2 = new Student("Joshua", "Brill", "Science");
-        Student student3 = new Student("Peter", "Pan", "Physics");
-         
-        University university = new University("CAMBRIDGE", "ENGLAND");
- 
-        student1.setUniversity(university);
-        student2.setUniversity(university);
-        student3.setUniversity(university);
- 
- 
+        Student student1 = new Student("Sam","Disilva");
+        
+        Teacher teacher1 = new Teacher("Melany");
+        student1.setTeacher(teacher1);
+        
+        
+        Subject subject1 = new Subject("Economics");
+        Subject subject2 = new Subject("Politics");
+         //Student1 have 3 subjects
+        student1.getSubjects().add(subject1);
+        student1.getSubjects().add(subject2);
+        
+     
+        
         Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
- 
-        session.persist(university);
+        session.beginTransaction(); 
+        session.persist(teacher1);
+        session.persist(subject1);
+        session.persist(subject2);
         session.persist(student1);
-        session.persist(student2);
-        session.persist(student3);
-         
-        List<Student> students = (List<Student>)session.createQuery("from Student ").list();
-        for(Student s: students){
-            System.out.println("Details : "+s);
-            System.out.println("Student University Details: "+s.getUniversity());
-        }
-         
         session.getTransaction().commit();
-        session.close();  
+        session.close();
+        
+        
+        
+        
+        
+        
+ 
+       
+
+   
+ 
+       
     }
  
 }
