@@ -7,20 +7,21 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pojo.Student;
+import pojo.Subject;
 
 
 
-public class DaoStudent {
+public class DaoSubject {
     
      private Session sesion;
     private Transaction tx;
     
-    public void save(Student student ) throws HibernateException {
+    public void save(Subject subject ) throws HibernateException {
   
     try{     
         
         initOperation();
-        sesion.persist(student);        
+        sesion.persist(subject);        
         tx.commit();
         
     
@@ -42,40 +43,22 @@ public class DaoStudent {
 
 }
     
-    public List<Student> listAll(){
+    public List<Subject> listAll(){
        
-       List<Student> students = null;
+       List<Subject> subjects = null;
        
        try{
            initOperation();
-           students= sesion.createQuery("from Student").list();           
+           subjects= sesion.createQuery("from Student").list();           
        } finally
        {
         sesion.close();
        }
        
-       return students;
+       return subjects;
    }   
     
-    public Student getByIdObject(int idStudent){
-       Student student = null;
-       try{
-           
-           initOperation();
-           student = (Student) sesion.get(Student.class, idStudent);           
-       }catch(HibernateException he){
-       
-        trueExcepcion(he); 
-        throw he; 
-       
-       } finally {
-           
-           sesion.close();
-       }
-       
-       
-       return student;
-   }
+   
    
 
 

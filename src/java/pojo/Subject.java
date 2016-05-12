@@ -1,12 +1,20 @@
 package pojo;
 
 
+ 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
  
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -16,16 +24,18 @@ import javax.persistence.Table;
 public class Subject {
  
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "SUBJECT_ID")
-     long id;
+    private long id;
  
     @Column(name = "NAME")
-     String name;
+    private String name;
      
      
-    @ManyToMany(mappedBy="subjects")
-    private List<Student> students = new ArrayList<Student>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="subjects")
+    private Set<Student> students = new HashSet<Student>(); 
+
+    
      
     public Subject(){
          
@@ -52,45 +62,13 @@ public class Subject {
     }
  
  
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
  
-    public void setStudents(List<Student> students) {
+    public void setStudents(Set<Student> students) {
         this.students = students;
     }
  
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
- 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Subject))
-            return false;
-        Subject other = (Subject) obj;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
- 
-    @Override
-    public String toString() {
-        return "Subject [id=" + id + ", name=" + name + "]";
-    }
  
 }

@@ -13,8 +13,7 @@
         <property name="format_sql">false</property>
         <property name="connection.pool_size">1</property>  
         <property name="hbm2ddl.auto">create-drop</property>
-        <mapping class="pojo.Subject"/>
-        <mapping class="pojo.Student"/>    
-        <mapping class="pojo.Teacher"/>   
+        <mapping class="pojo.Student"/>
+        <mapping class="pojo.Subject"/> 
     </session-factory>
 </hibernate-configuration>

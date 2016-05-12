@@ -3,17 +3,20 @@ package pojo;
 
  
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
  
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
  
 @Entity
@@ -21,7 +24,7 @@ import javax.persistence.Table;
 public class Student {
  
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "STUDENT_ID")
     private long id;
  
@@ -30,16 +33,12 @@ public class Student {
  
     @Column(name = "LAST_NAME")
     private String lastName;
-    
-    @ManyToOne(optional = false)
-    @JoinColumn(name="TEACHER_ID")
-    private Teacher teacher;
  
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "STUDENT_SUBJECT", 
         joinColumns = { @JoinColumn(name = "STUDENT_ID") }, 
         inverseJoinColumns = { @JoinColumn(name = "SUBJECT_ID") })
-    private List<Subject> subjects = new ArrayList<Subject>();
+    private Set<Subject> subjects = new HashSet<Subject>();
  
     public Student() {
     }
@@ -73,51 +72,15 @@ public class Student {
         this.lastName = lastName;
     }
  
-    public List<Subject> getSubjects() {
+    public Set<Subject> getSubjects() {
         return subjects;
     }
  
-    public void setSubjects(List<Subject> subjects) {
+    public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
  
      
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        return result;
-    }
- 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Student))
-            return false;
-        Student other = (Student) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
- 
-    @Override
-    public String toString() {
-        return "Student [id=" + id + ", firstName=" + firstName + ", lastName="
-                + lastName + "]";
-    }
-
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
+   
  
 }
